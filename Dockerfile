@@ -1,33 +1,23 @@
-FROM python:3.6.0
-# FROM python:3.6.9
+# app/Dockerfile
 
-LABEL maintainer "Noor Mohideen  <noormohideen61@gmail.com>"
-# If you have any comment : LinkedIn - https://www.linkedin.com/in/aminehy/
+FROM python:3.9-slim
 
-# Copy local code to the container image.
-ENV APP_HOME /Save-Mart
+WORKDIR /Save-Mart
 
-WORKDIR $APP_HOME
-COPY . ./
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    software-properties-common \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-# --------------- Install python packages using `pip` ---------------
+RUN git clone https://github.com/NOORMOHIDEEN/Save-Mart.git .
 
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt \
-	&& rm -rf requirements.txt
-
-# --------------- Configure Streamlit ---------------
-RUN mkdir -p /root/.streamlit
-
-RUN bash -c 'echo -e "\
-	[server]\n\
-	enableCORS = false\n\
-	" > /root/.streamlit/config.toml'
+COPY ./requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt --no-cache-dir --timeout 1000
 
 EXPOSE 8501
-EXPOSE 8080
 
-# --------------- Export envirennement variable ---------------
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-CMD ["streamlit", "run", "--server.port", "8080", "Home.py"]
+ENTRYPOINT ["streamlit", "run", "Home.py", "--server.port=8501", "--server.address=0.0.0.0"]

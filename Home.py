@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import streamlit.components.v1 as components
 def get_data_from_excel():
     df = pd.read_excel(
         io="supermarkt_sales.xlsx",
