@@ -19,7 +19,14 @@ def get_data_from_excel():
     return df
 
 df = get_data_from_excel()
-
+hide_style="""
+        <style>
+        #MainMenu {visibility:hidden;}
+        header{visibility:hidden;}
+        footer{visibility:hidden;}
+        </style>
+        """   
+st.markdown(hide_style,unsafe_allow_html=True)
 df1 = pd.DataFrame(
     np.random.randn(15, 2) / [50, 50] + [37.74, -122.42],
     columns=['lat', 'lon'])

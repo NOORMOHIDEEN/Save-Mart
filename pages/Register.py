@@ -2,6 +2,14 @@ import streamlit as st
 import datetime
 import pandas as pd  
 from openpyxl import load_workbook
+hide_style="""
+        <style>
+        #MainMenu {visibility:hidden;}
+        header{visibility:hidden;}
+        footer{visibility:hidden;}
+        </style>
+        """   
+st.markdown(hide_style,unsafe_allow_html=True)
 st.title("Register the Supermarket Details :")
 with st.form(key='my_form'):
     id=st.text_input("Invoice ID","750-67-8428")

@@ -14,7 +14,16 @@ def get_data_from_excel():
 
 
 
-def main():    
+def main(): 
+    hide_style="""
+        <style>
+        #MainMenu {visibility:hidden;}
+        header{visibility:hidden;}
+        footer{visibility:hidden;}
+        </style>
+        """   
+    st.markdown(hide_style,unsafe_allow_html=True)
+     
     st.title("SuperMarket Data Analysis And Register Data ")
     
     df = get_data_from_excel()
